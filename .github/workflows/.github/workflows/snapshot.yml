@@ -1,5 +1,5 @@
-name: Binance Snapshot
-
+</> YAML
+name: Binance Snapshop
 on:
   workflow_dispatch:
   schedule:
