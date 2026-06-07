@@ -1,4 +1,4 @@
-</> YAML
+
 name: Binance Snapshop
 on:
   workflow_dispatch:
