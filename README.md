@@ -1,1 +1,29 @@
 # binance-snapshot
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch Snapshot
+        run: |
+          mkdir -p data
+          curl -L "https://data-api.binance.vision/api/v3/ticker/24hr" -o data/latest.json
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > data/last_updated_utc.txt
+
+      - name: Commit Changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add data/latest.json data/last_updated_utc.txt
+          git commit -m "Update snapshot" || echo "No changes"
+          git push
